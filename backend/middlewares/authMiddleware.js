@@ -15,11 +15,11 @@ const authenticate = asyncHandler(async (req, res, next) => {
       next();
     } catch (error) {
       res.status(401);
-      throw new Error("Not authorized, token failed.");
+      throw new Error("Chưa được xác thực, token sai");
     }
   } else {
     res.status(401);
-    throw new Error("Not authorized, no token.");
+    throw new Error("Chưa được xác thực, không có token");
   }
 });
 
@@ -27,7 +27,7 @@ const authorizeAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
   } else {
-    res.status(401).send("Not authorized as an admin.");
+    res.status(401).send("Bạn không phải là admin");
   }
 };
 
