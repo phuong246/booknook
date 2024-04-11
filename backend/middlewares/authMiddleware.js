@@ -11,15 +11,16 @@ const authenticate = asyncHandler(async (req, res, next) => {
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      //const userId = req.params.id.trim();
       req.user = await User.findById(decoded.userId).select("-password");
       next();
     } catch (error) {
       res.status(401);
-      throw new Error("Not authorized, token failed.");
+      throw new Error("Chưa ủy quyền, token thất bại");
     }
   } else {
     res.status(401);
-    throw new Error("Not authorized, no token.");
+    throw new Error("Chưa ủy quyền, không có token");
   }
 });
 
@@ -27,7 +28,7 @@ const authorizeAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
   } else {
-    res.status(401).send("Not authorized as an admin.");
+    res.status(401).send("Chưa ủy quyền là một Admin");
   }
 };
 
